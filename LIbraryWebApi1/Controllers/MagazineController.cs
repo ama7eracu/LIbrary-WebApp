@@ -1,0 +1,100 @@
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Threading.Tasks;
+using LibraryWebApi1.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace LibraryWebApi1.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MagazineController : Controller
+    {
+        private readonly LibraryDbContext _context;
+        public MagazineController(LibraryDbContext ctx)
+        {
+            _context = ctx;
+        }
+        // GET:api/Magazine/
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Magazine>>> Get()
+        {
+            if (!_context.Magazines.Any())
+            {
+                return NotFound();
+            }
+            return Ok(await _context.Magazines.ToListAsync());
+        }
+        //GET:api/Magazine/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Magazine>> Get(long id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+            var magazine = await _context.Magazines.FindAsync(id);
+            if (magazine == null)
+            {
+                return NotFound();
+            }
+            return Ok(magazine);
+        }
+        //POST:api/Magazine/
+        [HttpPost]
+        public async Task<ActionResult> Post(Magazine magazine)
+        {
+            await _context.Magazines.AddAsync(magazine);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        //PUT:api/Magazine/id
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(long id, Magazine magazine)
+        {
+            if (id != magazine.Id)
+            {
+                return BadRequest();
+            }
+            var changeMagazine =await _context.Magazines.FirstOrDefaultAsync(x => x.Id == id);
+            if (changeMagazine == null)
+            {
+                return NotFound();
+            }
+            changeMagazine.Assigning(magazine);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        //DELETE:api/Magazine/id
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(long id)
+        {
+            var magazine = await _context.Magazines.FindAsync(id);
+            if (magazine == null)
+            {
+                return NotFound();
+            }
+            _context.Magazines.Entry(magazine).State=EntityState.Deleted;
+            await _context.SaveChangesAsync();
+            return Ok();
+
+        }
+        //GET:api/Magazine/Search/nameMagazine
+        [HttpGet("Search/{name}")]
+        public  ActionResult<IEnumerable<Magazine>> SearchByName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return BadRequest();
+            }
+            var foundBooks = Magazine.SearchByName(name, _context.Magazines);
+            if (!foundBooks.Any())
+            {
+                return NotFound();
+            }
+            return Ok(foundBooks);
+        }
+    }
+}
