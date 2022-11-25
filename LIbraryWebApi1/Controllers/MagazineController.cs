@@ -70,6 +70,10 @@ namespace LibraryWebApi1.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(MagazineDto magazineDto)
         {
+            if (await _context.Magazines.FindAsync(magazineDto.Id) != null)
+            {
+                return BadRequest();
+            }
             var magazine = new Magazine()
             {
                 Count = magazineDto.Count,

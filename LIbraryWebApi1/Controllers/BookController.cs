@@ -69,6 +69,10 @@ namespace LibraryWebApi1.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> Post(BookDto bookDto)
         {
+            if (await _context.Books.FindAsync(bookDto.Id) != null)
+            {
+                return BadRequest();
+            }
             Book book = new Book()
             {
                 Id = bookDto.Id,
