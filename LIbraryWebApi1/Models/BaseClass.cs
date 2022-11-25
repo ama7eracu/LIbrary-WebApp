@@ -15,11 +15,6 @@ namespace LibraryWebApi1.Models
         [Required]
         [Range(1,long.MaxValue,ErrorMessage = "Invalid Id Value")]
         public  long Id { get; set; }
-        
-        [Required]
-        [Range(1,int.MaxValue,ErrorMessage="Invalid Code Value")]
-        public int Code { get; set; }
-        
         [Required]
         [MinLength(4)]
         public string Name { get; set; } = null!;
@@ -37,7 +32,6 @@ namespace LibraryWebApi1.Models
         public string Publishing { get; set; } = null!;
         public virtual void Assigning(BaseClass baseClass)
         {
-            this.Code = baseClass.Code;
             this.Count = baseClass.Count;
             this.Name = baseClass.Name;
             this.Publishing = baseClass.Publishing;
