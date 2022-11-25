@@ -1,9 +1,4 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using Microsoft.EntityFrameworkCore;
-
 namespace LibraryWebApi1.Models
 {
     public class Book:BaseClass

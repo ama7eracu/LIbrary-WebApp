@@ -1,6 +1,5 @@
 using LIbraryWebApi1.AutoMapperProfiles;
 using LIbraryWebApi1.DbContexts;
-using LibraryWebApi1.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +13,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//Create localDb
 builder.Services.AddDbContext<LibraryDbContext>(opt =>
     opt.UseInMemoryDatabase("LocalLibraryDb"));
+//Connect AutoMapper
 builder.Services.AddAutoMapper(typeof(BookAutoMapperProfile), typeof(MagazineAutoMapperProfile));
 var app = builder.Build();
 

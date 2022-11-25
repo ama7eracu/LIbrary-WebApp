@@ -1,14 +1,11 @@
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using AutoMapper;
 using LIbraryWebApi1.DbContexts;
 using LibraryWebApi1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 namespace LibraryWebApi1.Controllers
 {
     [Route("api/[controller]")]
