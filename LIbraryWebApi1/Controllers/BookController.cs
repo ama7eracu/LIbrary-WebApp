@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace LibraryWebApi.Controllers
+namespace LibraryWebApi1.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
@@ -19,14 +19,14 @@ namespace LibraryWebApi.Controllers
         }
         // GET:api/Book/
         [HttpGet]
-        public  ActionResult<IQueryable<BookDTO>> Get()
+        public async Task<ActionResult<IQueryable<BookDto>>> Get()
         {
             if (!_context.Books.Any())
             {
                 return NotFound();
             }
-            var books = _context.Books.Select(x =>
-                new BookDTO()
+            var books = await _context.Books.Select(x =>
+                new BookDto()
                 {
                     Id = x.Id,
                     Author = x.Author,
@@ -35,12 +35,13 @@ namespace LibraryWebApi.Controllers
                     Publishing = x.Publishing,
                     Name = x.Name,
                     PublicationYear = x.PublicationYear
-                });
+                }).ToListAsync();
             return Ok(books);
         }
+        
         //GET:api/Book/id
         [HttpGet("{id}")] 
-        public async Task<ActionResult<BookDTO>> Get(long id)
+        public async Task<ActionResult<BookDto>> Get(long id)
         {
             if (id < 0)
             {
@@ -51,7 +52,7 @@ namespace LibraryWebApi.Controllers
             {
                 return NotFound();
             }
-            BookDTO bookDto = new BookDTO()
+            BookDto bookDto = new BookDto()
             {
                 Id=book.Id,
                 Name = book.Name,
@@ -63,9 +64,10 @@ namespace LibraryWebApi.Controllers
             };
             return Ok(bookDto);
         }
+        
         //POST:api/Book
         [HttpPost]
-        public async Task<ActionResult<Book>> Post(BookDTO bookDto)
+        public async Task<ActionResult<Book>> Post(BookDto bookDto)
         {
             Book book = new Book()
             {
@@ -81,6 +83,7 @@ namespace LibraryWebApi.Controllers
            await _context.SaveChangesAsync();
            return Ok();
        }
+        
         //PUT:api/Book/id
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(long id,Book book)
@@ -98,6 +101,7 @@ namespace LibraryWebApi.Controllers
            await _context.SaveChangesAsync();
            return Ok();
        }
+        
         //DELETE:api/Book/id
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(long id)
@@ -112,9 +116,10 @@ namespace LibraryWebApi.Controllers
             return Ok();
 
         }
+        
         //GET:api/Book/Search/nameBook
         [HttpGet("Search/{name}")]
-        public  ActionResult<IEnumerable<Book>> SearchByName(string name)
+        public async Task<ActionResult<IEnumerable<BookDto>>> SearchByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -125,7 +130,17 @@ namespace LibraryWebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(foundBooks);
+            var booksDto =await foundBooks.Select(x => new BookDto()
+            {
+                Author = x.Author,
+                Count = x.Count,
+                Genre = x.Genre,
+                Id = x.Id,
+                Name = x.Name,
+                Publishing = x.Publishing,
+                PublicationYear = x.PublicationYear
+            }).ToListAsync();
+            return Ok(booksDto);
         }
     }
 }

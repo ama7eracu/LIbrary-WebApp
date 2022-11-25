@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using LibraryWebApi1.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -19,17 +20,28 @@ namespace LibraryWebApi1.Controllers
         }
         // GET:api/Magazine/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Magazine>>> Get()
+        public async Task<ActionResult<IEnumerable<MagazineDto>>> Get()
         {
             if (!_context.Magazines.Any())
             {
                 return NotFound();
             }
-            return Ok(await _context.Magazines.ToListAsync());
+            var magazineDto = await _context.Magazines.Select(x => new MagazineDto()
+            {
+                Name = x.Name,
+                Count = x.Count,
+                Id = x.Id,
+                Number = x.Number,
+                Periodicity = x.Periodicity,
+                PublicationYear = x.PublicationYear,
+                Publishing = x.Publishing
+            }).ToListAsync();
+            return Ok(magazineDto);
         }
+        
         //GET:api/Magazine/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Magazine>> Get(long id)
+        public async Task<ActionResult<MagazineDto>> Get(long id)
         {
             if (id < 0)
             {
@@ -40,16 +52,39 @@ namespace LibraryWebApi1.Controllers
             {
                 return NotFound();
             }
-            return Ok(magazine);
+            var magazineDto = new MagazineDto()
+            {
+                Count = magazine.Count,
+                Name = magazine.Name,
+                Id = magazine.Id,
+                Number = magazine.Number,
+                Periodicity = magazine.Periodicity,
+                PublicationYear = magazine.PublicationYear,
+                Publishing = magazine.Publishing
+            };
+            
+            return Ok(magazineDto);
         }
+        
         //POST:api/Magazine/
         [HttpPost]
-        public async Task<ActionResult> Post(Magazine magazine)
+        public async Task<ActionResult> Post(MagazineDto magazineDto)
         {
+            var magazine = new Magazine()
+            {
+                Count = magazineDto.Count,
+                Id = magazineDto.Id,
+                Name = magazineDto.Name,
+                Number = magazineDto.Number,
+                Periodicity = magazineDto.Periodicity,
+                PublicationYear = magazineDto.PublicationYear,
+                Publishing = magazineDto.Publishing
+            };
             await _context.Magazines.AddAsync(magazine);
             await _context.SaveChangesAsync();
             return Ok();
         }
+        
         //PUT:api/Magazine/id
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(long id, Magazine magazine)
@@ -67,6 +102,7 @@ namespace LibraryWebApi1.Controllers
             await _context.SaveChangesAsync();
             return Ok();
         }
+        
         //DELETE:api/Magazine/id
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(long id)
@@ -81,20 +117,33 @@ namespace LibraryWebApi1.Controllers
             return Ok();
 
         }
+        
         //GET:api/Magazine/Search/nameMagazine
         [HttpGet("Search/{name}")]
-        public  ActionResult<IEnumerable<Magazine>> SearchByName(string name)
+        public  async Task<ActionResult<IQueryable<MagazineDto>>> SearchByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 return BadRequest();
             }
-            var foundBooks = Magazine.SearchByName(name, _context.Magazines);
-            if (!foundBooks.Any())
+            var foundMagazines = Magazine.SearchByName(name, _context.Magazines);
+            if (!foundMagazines.Any())
             {
                 return NotFound();
             }
-            return Ok(foundBooks);
+            var magazinesDto = await foundMagazines.Select(x => new MagazineDto()
+            {
+                Count = x.Count,
+                Id = x.Id,
+                Name = x.Name,
+                Number = x.Number,
+                Periodicity = x.Periodicity,
+                PublicationYear = x.PublicationYear,
+                Publishing = x.Publishing
+            }).ToListAsync();
+            
+            return Ok(magazinesDto);
         }
+        
     }
 }

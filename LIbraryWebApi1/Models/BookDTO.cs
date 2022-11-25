@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryWebApi1.Models
 {
-    public class BookDTO
+    public class BookDto
     {
         [Required]
         [Range(1,long.MaxValue)]
