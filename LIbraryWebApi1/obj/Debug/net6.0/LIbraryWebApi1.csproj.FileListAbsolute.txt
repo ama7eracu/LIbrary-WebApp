@@ -36,3 +36,5 @@
 /Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LIbraryWebApi1/obj/Debug/net6.0/LIbraryWebApi1.pdb
 /Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LIbraryWebApi1/obj/Debug/net6.0/LIbraryWebApi1.genruntimeconfig.cache
 /Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LIbraryWebApi1/obj/Debug/net6.0/ref/LIbraryWebApi1.dll
+/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LIbraryWebApi1/bin/Debug/net6.0/AutoMapper.dll
+/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LIbraryWebApi1/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

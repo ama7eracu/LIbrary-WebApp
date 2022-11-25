@@ -1,3 +1,5 @@
+using LIbraryWebApi1.AutoMapperProfiles;
+using LIbraryWebApi1.DbContexts;
 using LibraryWebApi1.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<LibraryDbContext>(opt =>
     opt.UseInMemoryDatabase("LocalLibraryDb"));
+builder.Services.AddAutoMapper(typeof(BookAutoMapperProfile), typeof(MagazineAutoMapperProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

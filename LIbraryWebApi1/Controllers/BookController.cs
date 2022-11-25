@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using LIbraryWebApi1.DbContexts;
 using LibraryWebApi1.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -13,35 +15,27 @@ namespace LibraryWebApi1.Controllers
     public class BookController : Controller
     {
         private readonly LibraryDbContext _context;
-        public BookController(LibraryDbContext ctx)
+        private readonly IMapper _mapper;
+        public BookController(LibraryDbContext ctx,IMapper mapper)
         {
             _context = ctx;
+            _mapper = mapper;
         }
         // GET:api/Book/
         [HttpGet]
-        public async Task<ActionResult<IQueryable<BookDto>>> Get()
+        public async Task<ActionResult<IQueryable<Book>>> Get()
         {
             if (!_context.Books.Any())
             {
                 return NotFound();
             }
-            var books = await _context.Books.Select(x =>
-                new BookDto()
-                {
-                    Id = x.Id,
-                    Author = x.Author,
-                    Count = x.Count,
-                    Genre = x.Genre,
-                    Publishing = x.Publishing,
-                    Name = x.Name,
-                    PublicationYear = x.PublicationYear
-                }).ToListAsync();
-            return Ok(books);
+            //var bookDto =await ( _context.Books.Select(book => _mapper.Map<BookDto>(book))).ToListAsync();
+            return Ok(await _context.Books.ToListAsync());
         }
         
         //GET:api/Book/id
         [HttpGet("{id}")] 
-        public async Task<ActionResult<BookDto>> Get(long id)
+        public async Task<ActionResult<Book>> Get(long id)
         {
             if (id < 0)
             {
@@ -52,47 +46,26 @@ namespace LibraryWebApi1.Controllers
             {
                 return NotFound();
             }
-            BookDto bookDto = new BookDto()
-            {
-                Id=book.Id,
-                Name = book.Name,
-                Author = book.Author,
-                Count = book.Count,
-                Genre = book.Genre,
-                PublicationYear = book.PublicationYear,
-                Publishing = book.Publishing
-            };
+            var bookDto = _mapper.Map<BookDto>(book);
             return Ok(bookDto);
         }
         
+        
         //POST:api/Book
         [HttpPost]
-        public async Task<ActionResult<Book>> Post(BookDto bookDto)
-        {
-            if (await _context.Books.FindAsync(bookDto.Id) != null)
-            {
-                return BadRequest();
-            }
-            Book book = new Book()
-            {
-                Id = bookDto.Id,
-                Author = bookDto.Author,
-                Count = bookDto.Count,
-                Genre = bookDto.Genre,
-                Name = bookDto.Name,
-                Publishing = bookDto.Publishing,
-                PublicationYear = bookDto.PublicationYear
-            };
-           _context.Books.Add(book);
+        public async Task<ActionResult> Post(BookDto bookDto)
+        { 
+            var book = _mapper.Map<Book>(bookDto); 
+            _context.Books.Add(book);
            await _context.SaveChangesAsync();
            return Ok();
        }
         
         //PUT:api/Book/id
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(long id,Book book)
+        public async Task<ActionResult> Put(long id,BookDto bookDto)
        {
-           if (id != book.Id)
+           if (id<0)
            {
                return BadRequest();
            }
@@ -101,11 +74,10 @@ namespace LibraryWebApi1.Controllers
            {
                return NotFound();
            }
-           changedBook.Assigning(book);
+           changedBook.Assigning(_mapper.Map<Book>(bookDto));
            await _context.SaveChangesAsync();
            return Ok();
        }
-        
         //DELETE:api/Book/id
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(long id)
@@ -123,7 +95,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Book/Search/nameBook
         [HttpGet("Search/{name}")]
-        public async Task<ActionResult<IEnumerable<BookDto>>> SearchByName(string name)
+        public  ActionResult<IEnumerable<Book>> SearchByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -134,17 +106,7 @@ namespace LibraryWebApi1.Controllers
             {
                 return NotFound();
             }
-            var booksDto =await foundBooks.Select(x => new BookDto()
-            {
-                Author = x.Author,
-                Count = x.Count,
-                Genre = x.Genre,
-                Id = x.Id,
-                Name = x.Name,
-                Publishing = x.Publishing,
-                PublicationYear = x.PublicationYear
-            }).ToListAsync();
-            return Ok(booksDto);
+            return Ok(foundBooks.Select(book=>_mapper.Map<BookDto>(book)));
         }
     }
 }

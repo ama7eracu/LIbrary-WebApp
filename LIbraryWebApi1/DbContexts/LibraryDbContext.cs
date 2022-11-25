@@ -1,5 +1,7 @@
+using LibraryWebApi1.Models;
 using Microsoft.EntityFrameworkCore;
-namespace LibraryWebApi1.Models
+
+namespace LIbraryWebApi1.DbContexts
 {
     public class LibraryDbContext:DbContext
     {

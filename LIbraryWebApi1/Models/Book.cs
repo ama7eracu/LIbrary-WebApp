@@ -8,11 +8,7 @@ namespace LibraryWebApi1.Models
 {
     public class Book:BaseClass
     {
-        [Required]
-        [MinLength(4)]
         public string Author { get; set; } = null!;
-        [Required]
-        [MinLength(4)]
         public string Genre { get; set; } = null!;
         public override void Assigning(BaseClass baseClass)
         {

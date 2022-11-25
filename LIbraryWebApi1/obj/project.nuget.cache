@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "yh8VIuqAcz9VfQarIC87ZznPN0Nz43Ie/4Crv+OPp56Xydp/a050pi5rK7IVlokNL4Dl5VBMs8mQuzv765Mb9Q==",
+  "dgSpecHash": "SFrgqrFl9M1tEJ3WeOCcb4P2X3whI5v3Lp9eS0AqhLmua112OvBRRPIy5fcN/my/9zKE/7kfdi7FhV24BS0HpQ==",
   "success": true,
   "projectFilePath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LIbraryWebApi1/LIbraryWebApi1.csproj",
   "expectedPackageFiles": [
+    "/Users/aleksandrmekanin/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
+    "/Users/aleksandrmekanin/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.0/automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
+    "/Users/aleksandrmekanin/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/aleksandrmekanin/.nuget/packages/microsoft.entityframeworkcore/7.0.0/microsoft.entityframeworkcore.7.0.0.nupkg.sha512",
     "/Users/aleksandrmekanin/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.0/microsoft.entityframeworkcore.abstractions.7.0.0.nupkg.sha512",
     "/Users/aleksandrmekanin/.nuget/packages/microsoft.entityframeworkcore.analyzers/7.0.0/microsoft.entityframeworkcore.analyzers.7.0.0.nupkg.sha512",

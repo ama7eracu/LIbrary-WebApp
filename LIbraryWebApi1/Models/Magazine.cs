@@ -7,12 +7,7 @@ namespace LibraryWebApi1.Models
 {
     public class Magazine:BaseClass
     {
-       
-        [Required] 
-        [Range(1,31,ErrorMessage="Invalid Periodicity Value")]
         public int Periodicity { get; set; }
-        [Range(1,int.MaxValue,ErrorMessage="Invalid Number Value")]
-        [Required]
         public int Number { get; set; }
         public override void Assigning(BaseClass baseClass)
         {
