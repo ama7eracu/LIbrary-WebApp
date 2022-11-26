@@ -29,8 +29,8 @@ namespace LibraryWebApi1.Controllers
             {
                 return NotFound();
             }
-            //var bookDto =await ( _context.Books.Select(book => _mapper.Map<BookDto>(book))).ToListAsync();
-            return Ok(await _context.Books.ToListAsync());
+            var bookDto =await ( _context.Books.Select(book => _mapper.Map<BookDto>(book))).ToListAsync();
+            return Ok(bookDto);
         }
         
         //GET:api/Book/id
