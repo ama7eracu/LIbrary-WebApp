@@ -21,7 +21,7 @@ namespace LibraryWebApi1.Controllers
         }
         // GET:api/Magazine/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MagazineDto>>> Get()
+        public async Task<ActionResult<IEnumerable<MagazineDto>>> GetAllMagazines()
         {
             if (!_context.Magazines.Any())
             {
@@ -34,7 +34,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Magazine/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<MagazineDto>> Get(long id)
+        public async Task<ActionResult<MagazineDto>> GetMagazine(long id)
         {
             if (id < 0)
             {
@@ -50,7 +50,7 @@ namespace LibraryWebApi1.Controllers
         
         //POST:api/Magazine/
         [HttpPost]
-        public async Task<ActionResult> Post(MagazineDto magazineDto)
+        public async Task<ActionResult> AddMagazine(MagazineDto magazineDto)
         {
             var magazine = _mapper.Map<Magazine>(magazineDto);
             await _context.Magazines.AddAsync(magazine);
@@ -60,7 +60,7 @@ namespace LibraryWebApi1.Controllers
         
         //PUT:api/Magazine/id
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(long id, MagazineDto magazineDto)
+        public async Task<ActionResult> EditMagazine(long id, MagazineDto magazineDto)
         {
             if (id < 0)
             {
@@ -78,7 +78,7 @@ namespace LibraryWebApi1.Controllers
         
         //DELETE:api/Magazine/id
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long id)
+        public async Task<ActionResult> DeleteMagazine(long id)
         {
             var magazine = await _context.Magazines.FindAsync(id);
             if (magazine == null)

@@ -23,7 +23,7 @@ namespace LibraryWebApi1.Controllers
         }
         // GET:api/Book/
         [HttpGet]
-        public async Task<ActionResult<IQueryable<BookDto>>> Get()
+        public async Task<ActionResult<IQueryable<BookDto>>> GetAllBooks()
         {
             if (!_context.Books.Any())
             {
@@ -35,7 +35,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Book/id
         [HttpGet("{id}")] 
-        public async Task<ActionResult<BookDto>> Get(long id)
+        public async Task<ActionResult<BookDto>> GetBook(long id)
         {
             if (id < 0)
             {
@@ -53,7 +53,7 @@ namespace LibraryWebApi1.Controllers
         
         //POST:api/Book
         [HttpPost]
-        public async Task<ActionResult> Post(BookDto bookDto)
+        public async Task<ActionResult> AddBook(BookDto bookDto)
         { 
             var book = _mapper.Map<Book>(bookDto); 
             _context.Books.Add(book);
@@ -63,7 +63,7 @@ namespace LibraryWebApi1.Controllers
         
         //PUT:api/Book/id
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(long id,BookDto bookDto)
+        public async Task<ActionResult> EditBook(long id,BookDto bookDto)
        {
            if (id<0)
            {
@@ -80,7 +80,7 @@ namespace LibraryWebApi1.Controllers
        }
         //DELETE:api/Book/id
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(long id)
+        public async Task<ActionResult> DeleteBook(long id)
         {
             var book = await _context.Books.FindAsync(id);
             if (book == null)
