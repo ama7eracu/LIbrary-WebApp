@@ -16,9 +16,9 @@ namespace LibraryWebApi1.Controllers
     {
         private readonly LibraryDbContext _context;
         private readonly IMapper _mapper;
-        public BookController(LibraryDbContext ctx,IMapper mapper)
+        public BookController(LibraryDbContext context,IMapper mapper)
         {
-            _context = ctx;
+            _context = context;
             _mapper = mapper;
         }
         // GET:api/Book/
