@@ -21,7 +21,7 @@ namespace LibraryWebApi1.Controllers
         }
         // GET:api/Magazine/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Magazine>>> Get()
+        public async Task<ActionResult<IEnumerable<MagazineDto>>> Get()
         {
             if (!_context.Magazines.Any())
             {
@@ -34,7 +34,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Magazine/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Magazine>> Get(long id)
+        public async Task<ActionResult<MagazineDto>> Get(long id)
         {
             if (id < 0)
             {
@@ -92,7 +92,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Magazine/Search/nameMagazine
         [HttpGet("Search/{name}")]
-        public  async Task<ActionResult<IQueryable<Magazine>>> SearchByName(string name)
+        public  async Task<ActionResult<IQueryable<MagazineDto>>> SearchByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {

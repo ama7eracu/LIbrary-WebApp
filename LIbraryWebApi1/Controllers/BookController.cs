@@ -23,7 +23,7 @@ namespace LibraryWebApi1.Controllers
         }
         // GET:api/Book/
         [HttpGet]
-        public async Task<ActionResult<IQueryable<Book>>> Get()
+        public async Task<ActionResult<IQueryable<BookDto>>> Get()
         {
             if (!_context.Books.Any())
             {
@@ -35,7 +35,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Book/id
         [HttpGet("{id}")] 
-        public async Task<ActionResult<Book>> Get(long id)
+        public async Task<ActionResult<BookDto>> Get(long id)
         {
             if (id < 0)
             {
@@ -95,7 +95,7 @@ namespace LibraryWebApi1.Controllers
         
         //GET:api/Book/Search/nameBook
         [HttpGet("Search/{name}")]
-        public  ActionResult<IEnumerable<Book>> SearchByName(string name)
+        public  ActionResult<IEnumerable<BookDto>> SearchByName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
