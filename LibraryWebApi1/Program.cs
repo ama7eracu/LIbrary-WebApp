@@ -24,9 +24,11 @@ builder.Services.AddDbContext<LibraryDbContext>(opt =>
 //Connect AutoMapper
 builder.Services.AddAutoMapper(typeof(BookAutoMapperProfile), typeof(MagazineAutoMapperProfile));
 //add Search Services
-builder.Services.AddScoped<ISearchByName<BookDto>,SearchByNameBook>();
-builder.Services.AddScoped<ISearchByName<LibraryDTO>, SearchByNameLibrary>();
-builder.Services.AddScoped<ISearchByName<MagazineDto>, SearchByNameMagazine>();
+builder.Services.AddScoped<BookSearch>();
+builder.Services.AddScoped<ISearchByName<BookDto>>(serv => serv.GetRequiredService<BookSearch>());
+builder.Services.AddScoped<ISearchByGenre>(serv => serv.GetRequiredService<BookSearch>());
+builder.Services.AddScoped<ISearchByName<LibraryDTO>, LibrarySearch>();
+builder.Services.AddScoped<ISearchByName<MagazineDto>, MagazineSearch>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

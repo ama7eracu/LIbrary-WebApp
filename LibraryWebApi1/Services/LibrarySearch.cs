@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 namespace LibraryWebApi1.Services
 {
     
-    public class SearchByNameLibrary:ISearchByName<LibraryDTO>
+    public class LibrarySearch:ISearchByName<LibraryDTO>
     {
         private readonly IMapper _mapper;
 
-        public SearchByNameLibrary(IMapper mapper)
+        public LibrarySearch(IMapper mapper)
         {
             _mapper = mapper;
         }

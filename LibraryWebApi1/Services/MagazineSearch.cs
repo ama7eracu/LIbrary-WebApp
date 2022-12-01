@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Services
 {
-    public class SearchByNameMagazine:ISearchByName<MagazineDto>
+    public class MagazineSearch:ISearchByName<MagazineDto>
     {
         
         private readonly IMapper _mapper;
 
-        public SearchByNameMagazine(IMapper mapper)
+        public MagazineSearch(IMapper mapper)
         {
             _mapper = mapper;
         }

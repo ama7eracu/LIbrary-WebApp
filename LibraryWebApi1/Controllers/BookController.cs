@@ -17,13 +17,15 @@ namespace LibraryWebApi1.Controllers
     public class BookController : Controller
     {
         private readonly ISearchByName<BookDto> _search;
+        private readonly ISearchByGenre _searchByGenre;
         private readonly LibraryDbContext _context;
         private readonly IMapper _mapper;
-        public BookController(LibraryDbContext context,IMapper mapper, ISearchByName<BookDto> search)
+        public BookController(LibraryDbContext context,IMapper mapper, ISearchByName<BookDto> search, ISearchByGenre searchByGenre)
         {
             _context = context;
             _mapper = mapper;
             _search = search;
+            _searchByGenre = searchByGenre;
         }
         // GET:api/Book/
         [HttpGet]
@@ -96,8 +98,8 @@ namespace LibraryWebApi1.Controllers
 
         }
         
-        //GET:api/Book/Search/nameBook
-        [HttpGet("Search/{searchName}")]
+        //GET:api/Book/Search/name/nameBook
+        [HttpGet("search/name/{searchName}")]
         public async Task< ActionResult<IEnumerable<BookDto>>> SearchBookByName(string searchName)
         {
             if (string.IsNullOrWhiteSpace(searchName))
@@ -105,6 +107,21 @@ namespace LibraryWebApi1.Controllers
                 return BadRequest();
             }
             var foundBooks =await _search.SearchByName(searchName, _context);
+            if (!foundBooks.Any())
+            {
+                return NotFound();
+            }
+            return Ok(foundBooks);
+        }
+        //GET:api/Book/search/genre/{roman}
+        [HttpGet("search/genre/{searchGenre}")]
+        public async Task<ActionResult<List<BookDto>>> SearchByGenre(string searchGenre)
+        {
+            if (string.IsNullOrEmpty(searchGenre))
+            {
+                return BadRequest();
+            }
+            var foundBooks = await _searchByGenre.SearchByGenre(searchGenre, _context);
             if (!foundBooks.Any())
             {
                 return NotFound();

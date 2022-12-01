@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Services
 {
-    public class SearchByNameBook:ISearchByName<BookDto>
+    public class BookSearch:ISearchByName<BookDto>,ISearchByGenre
     {
         private readonly IMapper _mapper;
-        public SearchByNameBook(IMapper mapper)
+        public BookSearch(IMapper mapper)
         {
             _mapper = mapper;
         }
@@ -24,6 +24,11 @@ namespace LibraryWebApi1.Services
                 .Select(book => _mapper.Map<BookDto>(book));
             return foundBooksDto.ToList();
         }
-        
+        public async Task<List<BookDto>> SearchByGenre(string searchGenre, LibraryDbContext context)
+        {
+            var books = await (context.Books.Select(book => _mapper.Map<BookDto>(book))).ToListAsync();
+            var foundBooks = books.Where(book => book.Genre.ToLower().Equals(searchGenre.ToLower())).ToList();
+            return foundBooks;
+        }
     }
 }
