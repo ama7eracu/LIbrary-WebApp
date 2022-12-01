@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models;
 using LibraryWebApi1.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

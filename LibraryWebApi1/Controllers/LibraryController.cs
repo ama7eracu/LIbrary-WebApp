@@ -26,7 +26,7 @@ namespace LibraryWebApi1.Controllers
             _search = search;
         }
         //GET:api/Library/
-        [HttpGet("Search/{searchName}")]
+        [HttpGet("search/name/{searchName}")]
         public async Task<ActionResult<List<LibraryDTO>>> SearchByNameAll(string searchName)
         {
             if (string.IsNullOrWhiteSpace(searchName))

@@ -94,8 +94,8 @@ namespace LibraryWebApi1.Controllers
             return Ok();
         }
         
-        //GET:api/Magazine/Search/nameMagazine
-        [HttpGet("Search/name/{searchName}")]
+        //GET:api/Magazine/Search/name/searchName
+        [HttpGet("search/name/{searchName}")]
         public async Task<ActionResult<IQueryable<MagazineDto>>>SearchMagazineByName(string searchName)
         {
             if (string.IsNullOrWhiteSpace(searchName))
