@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LibraryWebApi1.Interfaces.Models;
+using LibraryWebApi1.Models;
 
 namespace LibraryWebApi1.Data.Interfaces
 {

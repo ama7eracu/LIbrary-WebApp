@@ -1,7 +1,7 @@
 using LibraryWebApi1.AutoMapperProfiles;
 using LibraryWebApi1.Data;
 using LibraryWebApi1.Data.Interfaces;
-using LibraryWebApi1.Interfaces.Models.DTO;
+using LibraryWebApi1.Models.DTO;
 using LibraryWebApi1.Services;
 using LibraryWebApi1.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryWebApi1.Data.Interfaces;
-using LibraryWebApi1.Interfaces.Models;
+using LibraryWebApi1.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Data
@@ -28,7 +28,7 @@ namespace LibraryWebApi1.Data
 
         public async Task<Book?> GetBook(long id)
         {
-            return await _context.Books.FirstOrDefaultAsync(x=>x.Id==id)!;
+            return await _context.Books.FirstOrDefaultAsync(x=>x.Id==id);
         }
 
         public async Task<bool> AddBook(Book book)
@@ -47,15 +47,15 @@ namespace LibraryWebApi1.Data
         public async Task<bool> EditBook(long id,Book book)
         {
             var updateBook = _context.Books.FirstOrDefault(x => x.Id == id);
-            updateBook.Assigning(book);
-            _context.Books.Update(updateBook);
+            updateBook?.Assigning(book);
+            _context.Books.Update(updateBook!);
             return await Save();
         }
 
         public async Task<bool> Save()
         {
             var save= await _context.SaveChangesAsync();
-            return save > 0 ? true : false;
+            return save > 0;
         }
     }
 }

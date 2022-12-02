@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LibraryWebApi1.Data.Interfaces;
-using LibraryWebApi1.Interfaces.Models;
-using LibraryWebApi1.Interfaces.Models.DTO;
+using LibraryWebApi1.Models;
+using LibraryWebApi1.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

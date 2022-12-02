@@ -1,4 +1,4 @@
-using LibraryWebApi1.Interfaces.Models;
+using LibraryWebApi1.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Data

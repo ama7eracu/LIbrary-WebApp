@@ -1,5 +1,5 @@
 
-namespace LibraryWebApi1.Interfaces.Models
+namespace LibraryWebApi1.Models
 {
     public class Magazine:BaseClass
     {

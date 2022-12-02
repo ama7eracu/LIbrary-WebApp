@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace LibraryWebApi1.Interfaces.Models
+namespace LibraryWebApi1.Models
 {
     public class BaseClass
     {
