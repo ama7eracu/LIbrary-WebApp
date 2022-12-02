@@ -2,14 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models.DTO;
+using LibraryWebApi1.Data.Interfaces;
+using LibraryWebApi1.Interfaces.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Services
 {
-    public class MagazineSearch:ISearchByName<MagazineDto>
+    public class MagazineSearch:ISearchByName<MagazineDto,IMagazineRepository>
     {
         
         private readonly IMapper _mapper;
@@ -18,20 +17,13 @@ namespace LibraryWebApi1.Services
         {
             _mapper = mapper;
         }
-        public List<MagazineDto> SearchByName(string searchName, IEnumerable<MagazineDto> magazines)
+        public async Task<List<MagazineDto>> SearchByName(string searchName, IMagazineRepository repository)
         {
+            var magazines =await repository.GetAllMagazine();
             var foundMagazines = magazines
                 .Where(s => s.Name.ToLower().Contains(searchName.ToLower()));
-            return foundMagazines.ToList();
+            return foundMagazines.Select(magazine => _mapper.Map<MagazineDto>(magazine)).ToList();
         }
-
-        public async Task<List<MagazineDto>> SearchByName(string searchName, LibraryDbContext context)
-        {
-            var foundMagazines =await (context.Magazines
-                .Where(s => s.Name.ToLower().Contains(searchName.ToLower()))).ToListAsync();
-            var foundMagazinesDto = foundMagazines
-                .Select(x => _mapper.Map<MagazineDto>(x)).ToList();
-            return foundMagazinesDto;
+        
         }
     }
-}

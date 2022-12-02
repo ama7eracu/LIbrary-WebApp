@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models.DTO;
+using LibraryWebApi1.Data.Interfaces;
+using LibraryWebApi1.Interfaces.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Services
 {
     
-    public class LibrarySearch:ISearchByName<LibraryDTO>
+    public class LibrarySearch:ISearchByName<LibraryDTO,ILibraryRepository>
     {
         private readonly IMapper _mapper;
 
@@ -18,13 +17,19 @@ namespace LibraryWebApi1.Services
         {
             _mapper = mapper;
         }
-        public async Task<List<LibraryDTO>> SearchByName(string searchName, LibraryDbContext context)
+        public async Task<List<LibraryDTO>> SearchByName(string searchName, ILibraryRepository repository)
         {
-            var books = await context.Books.Select(book => _mapper.Map<LibraryDTO>(book)).ToListAsync();
-            var magazines = await context.Magazines.Select(magazine => _mapper.Map<LibraryDTO>(magazine)).ToListAsync();
-            var library = books.Concat(magazines);
-            var foundLibrary = library.Where(s => s.Name.ToLower().Contains(searchName.ToLower())).ToList();
+            var books = await repository.GetAllBook();
+            var booksDto = books
+                .ToList().Select(book => _mapper.Map<LibraryDTO>(book));
+            var magazines = await repository.GetAllMagazine();
+            var magazinesDto = magazines
+                .ToList().Select(magazine => _mapper.Map<LibraryDTO>(magazine));
+            var library = booksDto.Concat(magazinesDto);
+            var foundLibrary = library
+                .Where(s => s.Name.ToLower().Contains(searchName.ToLower())).ToList();
             return foundLibrary;
+
         }
     }
 }

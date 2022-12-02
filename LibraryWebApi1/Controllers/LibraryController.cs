@@ -2,12 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models;
-using LibraryWebApi1.Models.DTO;
+using LibraryWebApi1.Data.Interfaces;
+using LibraryWebApi1.Interfaces.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LibraryWebApi1.Controllers
 {
@@ -15,13 +13,14 @@ namespace LibraryWebApi1.Controllers
     [ApiController]
     public class LibraryController : Controller
     {
-        private readonly LibraryDbContext _context;
+        private readonly ILibraryRepository _repository;
         private readonly IMapper _mapper;
-        private readonly ISearchByName<LibraryDTO> _search;
+        private readonly ISearchByName<LibraryDTO,ILibraryRepository> _search;
 
-        public LibraryController(LibraryDbContext context, IMapper mapper, ISearchByName<LibraryDTO> search)
+        public LibraryController(ILibraryRepository repository, IMapper mapper,
+            ISearchByName<LibraryDTO,ILibraryRepository> search)
         {
-            _context = context;
+            _repository = repository;
             _mapper = mapper;
             _search = search;
         }
@@ -33,7 +32,7 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var foundLibraryDto =await _search.SearchByName(searchName, _context);
+            var foundLibraryDto =await _search.SearchByName(searchName, _repository);
             if (!foundLibraryDto.Any())
             {
                 return NotFound();

@@ -2,24 +2,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models;
-using LibraryWebApi1.Models.DTO;
+using LibraryWebApi1.Data.Interfaces;
+using LibraryWebApi1.Interfaces.Models;
+using LibraryWebApi1.Interfaces.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 namespace LibraryWebApi1.Controllers
+
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MagazineController : Controller
+    public class MagazinesController : Controller
     {
-        private readonly LibraryDbContext _context;
+        private readonly IMagazineRepository _repository;
         private readonly IMapper _mapper;
-        private readonly ISearchByName<MagazineDto> _search;
-        public MagazineController(LibraryDbContext context,IMapper mapper, ISearchByName<MagazineDto> search)
+        private readonly ISearchByName<MagazineDto,IMagazineRepository> _search;
+        public MagazinesController(IMagazineRepository repository,IMapper mapper,
+            ISearchByName<MagazineDto,IMagazineRepository> search)
         {
-            _context = context;
+            _repository = repository;
             _mapper = mapper;
             _search = search;
         }
@@ -27,12 +28,13 @@ namespace LibraryWebApi1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MagazineDto>>> GetAllMagazines()
         {
-            if (!_context.Magazines.Any())
+            var magazines =await _repository.GetAllMagazine();
+            if (!magazines.Any())
             {
                 return NotFound();
             }
-            var magazinesDto =await _context.Magazines.
-                Select(magazine => _mapper.Map<MagazineDto>(magazine)).ToListAsync();
+
+            var magazinesDto = magazines.Select(magazine => _mapper.Map<MagazineDto>(magazine));
             return Ok(magazinesDto);
         }
         
@@ -44,11 +46,13 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var magazine = await _context.Magazines.FindAsync(id);
-            if (magazine == null)
+            
+            if (! await _repository.MagazineExists(id))
             {
                 return NotFound();
             }
+
+            var magazine = await _repository.GetMagazine(id);
             return Ok(_mapper.Map<MagazineDto>(magazine));
         }
         
@@ -57,8 +61,10 @@ namespace LibraryWebApi1.Controllers
         public async Task<ActionResult> AddMagazine(MagazineDto magazineDto)
         {
             var magazine = _mapper.Map<Magazine>(magazineDto);
-            await _context.Magazines.AddAsync(magazine);
-            await _context.SaveChangesAsync();
+            if (!await _repository.AddMagazine(magazine))
+            {
+                return BadRequest();
+            }
             return Ok();
         }
         
@@ -70,31 +76,36 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var changeMagazine =await _context.Magazines.FirstOrDefaultAsync(x => x.Id == id);
-            if (changeMagazine == null)
+            var magazine = _mapper.Map<Magazine>(magazineDto);
+            if (!await _repository.MagazineExists(id))
             {
                 return NotFound();
             }
-            changeMagazine.Assigning(_mapper.Map<Magazine>(magazineDto));
-            await _context.SaveChangesAsync();
-            return Ok();
+
+            if (!await _repository.EditMagazine(id,magazine))
+            {
+                return BadRequest();
+            }
+            return NoContent();
         }
         
         //DELETE:api/Magazine/id
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMagazine(long id)
         {
-            var magazine = await _context.Magazines.FindAsync(id);
-            if (magazine == null)
+            if (!await _repository.MagazineExists(id))
             {
                 return NotFound();
             }
-            _context.Magazines.Entry(magazine).State=EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            var magazine = await _repository.GetMagazine(id);
+            if (!await _repository.DeleteMagazine(magazine!))
+            {
+                return BadRequest();
+            }
             return Ok();
         }
         
-        //GET:api/Magazine/Search/name/searchName
+         //GET:api/Magazine/Search/name/searchName
         [HttpGet("search/name/{searchName}")]
         public async Task<ActionResult<IQueryable<MagazineDto>>>SearchMagazineByName(string searchName)
         {
@@ -102,7 +113,7 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var foundMagazine =await _search.SearchByName(searchName, _context);
+            var foundMagazine =await _search.SearchByName(searchName, _repository);
             if (!foundMagazine.Any())
             {
                 return NotFound();

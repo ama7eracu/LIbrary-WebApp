@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryWebApi1.Models.DTO
+namespace LibraryWebApi1.Interfaces.Models.DTO
 {
     public class MagazineDto
     {

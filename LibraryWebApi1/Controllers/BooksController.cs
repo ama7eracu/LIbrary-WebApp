@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models;
-using LibraryWebApi1.Models.DTO;
+using LibraryWebApi1.Data.Interfaces;
+using LibraryWebApi1.Interfaces.Models;
+using LibraryWebApi1.Interfaces.Models.DTO;
 using LibraryWebApi1.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,31 +13,35 @@ namespace LibraryWebApi1.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
-    public class BookController : Controller
+    public class BooksController : Controller
     {
-        private readonly ISearchByName<BookDto> _search;
+        private readonly IBookRepository _repository;
+        private readonly ISearchByName<BookDto,IBookRepository> _search;
         private readonly ISearchByGenre _searchByGenre;
-        private readonly LibraryDbContext _context;
         private readonly IMapper _mapper;
-        public BookController(LibraryDbContext context,IMapper mapper, ISearchByName<BookDto> search, ISearchByGenre searchByGenre)
+
+        public BooksController(IBookRepository repository, IMapper mapper, ISearchByName<BookDto,IBookRepository> search,
+            ISearchByGenre searchByGenre)
         {
-            _context = context;
+            _repository = repository;
             _mapper = mapper;
             _search = search;
             _searchByGenre = searchByGenre;
         }
+
         // GET:api/Book/
         [HttpGet]
         public async Task<ActionResult<IQueryable<BookDto>>> GetAllBooks()
         {
-            if (!_context.Books.Any())
+            var books = await _repository.GetAllBook();
+            if (!books.Any())
             {
                 return NotFound();
             }
-            var bookDto =await ( _context.Books.Select(book => _mapper.Map<BookDto>(book))).ToListAsync();
+            var bookDto = books.Select(book => _mapper.Map<BookDto>(book));
             return Ok(bookDto);
         }
-        
+
         //GET:api/Book/id
         [HttpGet("{id}")] 
         public async Task<ActionResult<BookDto>> GetBook(long id)
@@ -47,58 +50,65 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var book = await _context.Books.FindAsync(id);
-            if (book==null)
+            if (! await _repository.BookExists(id))
             {
                 return NotFound();
             }
+            var book = await _repository.GetBook(id);
             var bookDto = _mapper.Map<BookDto>(book);
             return Ok(bookDto);
         }
-        
+
         //POST:api/Book
         [HttpPost]
         public async Task<ActionResult> AddBook(BookDto bookDto)
         { 
-            var book = _mapper.Map<Book>(bookDto); 
-            _context.Books.Add(book);
-           await _context.SaveChangesAsync();
-           return Ok();
+            var book = _mapper.Map<Book>(bookDto);
+            if (!await _repository.AddBook(book))
+            {
+                return BadRequest();
+            }
+            return Ok();
        }
-        
-        //PUT:api/Book/id
-        [HttpPut("{id}")]
-        public async Task<ActionResult> EditBook(long id,BookDto bookDto)
-       {
-           if (id<0)
-           {
-               return BadRequest();
-           }
-           var changedBook =await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
-           if (changedBook == null)
-           {
-               return NotFound();
-           }
-           changedBook.Assigning(_mapper.Map<Book>(bookDto));
-           await _context.SaveChangesAsync();
-           return Ok();
-       }
+
+         //PUT:api/Book/id
+         [HttpPut("{id}")]
+         public async Task<ActionResult> EditBook(long id,BookDto bookDto)
+        {
+            if (id<0)
+            {
+                return BadRequest();
+            }
+            var book = _mapper.Map<Book>(bookDto);
+            if (!await _repository.BookExists(id))
+            {
+                return NotFound();
+            }
+
+            if (!await _repository.EditBook(id,book))
+            {
+                return BadRequest();
+            }
+            return NoContent();
+        }
         //DELETE:api/Book/id
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBook(long id)
         {
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            if (!await _repository.BookExists(id))
             {
                 return NotFound();
             }
-            _context.Books.Entry(book).State=EntityState.Deleted;
-            await _context.SaveChangesAsync();
-            return Ok();
+            var book = await _repository.GetBook(id);
+            if (!await _repository.DeleteBook(book!))
+            {
+                return BadRequest();
+            }
 
+            return Ok();
         }
-        
-        //GET:api/Book/Search/name/nameBook
+
+         //GET:api/Book/Search/name/nameBook
         [HttpGet("search/name/{searchName}")]
         public async Task< ActionResult<IEnumerable<BookDto>>> SearchBookByName(string searchName)
         {
@@ -106,14 +116,14 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var foundBooks =await _search.SearchByName(searchName, _context);
+            var foundBooks =await _search.SearchByName(searchName, _repository);
             if (!foundBooks.Any())
             {
                 return NotFound();
             }
             return Ok(foundBooks);
         }
-        //GET:api/Book/search/genre/{roman}
+         //GET:api/Book/search/genre/{roman}
         [HttpGet("search/genre/{searchGenre}")]
         public async Task<ActionResult<List<BookDto>>> SearchByGenre(string searchGenre)
         {
@@ -121,7 +131,7 @@ namespace LibraryWebApi1.Controllers
             {
                 return BadRequest();
             }
-            var foundBooks = await _searchByGenre.SearchByGenre(searchGenre, _context);
+            var foundBooks = await _searchByGenre.SearchByGenre(searchGenre, _repository);
             if (!foundBooks.Any())
             {
                 return NotFound();

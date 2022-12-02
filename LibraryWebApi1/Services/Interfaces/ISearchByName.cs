@@ -1,14 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using LibraryWebApi1.DbContexts;
-using LibraryWebApi1.Models;
 
 namespace LibraryWebApi1.Services.Interfaces
 {
-    public interface ISearchByName<T>
+    public interface ISearchByName<T, repository>
     {
-        //List<T> SearchByName(string searchName, IEnumerable<T> collection);
-         Task<List<T>>  SearchByName(string searchName, LibraryDbContext context);
+        Task<List<T>>  SearchByName(string searchName, repository _repository);
     }
 }

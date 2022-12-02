@@ -1,10 +1,9 @@
-using System.Numerics;
-using LibraryWebApi1.Models;
+using LibraryWebApi1.Interfaces.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LibraryWebApi1.DbContexts
+namespace LibraryWebApi1.Data
 {
-    public class LibraryDbContext:DbContext
+    public sealed class LibraryDbContext:DbContext
     {
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
