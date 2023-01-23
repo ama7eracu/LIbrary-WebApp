@@ -947,11 +947,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LibraryWebApi1/LibraryWebApi1.csproj",
+      "projectUniqueName": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi155/LibraryWebApi1/LibraryWebApi1.csproj",
       "projectName": "LibraryWebApi1",
-      "projectPath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LibraryWebApi1/LibraryWebApi1.csproj",
+      "projectPath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi155/LibraryWebApi1/LibraryWebApi1.csproj",
       "packagesPath": "/Users/aleksandrmekanin/.nuget/packages/",
-      "outputPath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LibraryWebApi1/obj/",
+      "outputPath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi155/LibraryWebApi1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/aleksandrmekanin/.nuget/NuGet/NuGet.Config"

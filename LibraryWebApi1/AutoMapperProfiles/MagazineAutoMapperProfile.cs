@@ -9,7 +9,7 @@ namespace LibraryWebApi1.AutoMapperProfiles
     {
         public MagazineAutoMapperProfile()
         {
-            CreateMap<MagazineDto, Magazine>().ReverseMap();
+            CreateMap<MagazineDTO, Magazine>().ReverseMap();
         }
     }
 }

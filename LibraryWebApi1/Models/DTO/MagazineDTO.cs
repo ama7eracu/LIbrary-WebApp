@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryWebApi1.Models.DTO
 {
-    public class MagazineDto
+    public class MagazineDTO
     {
         [Required] [MinLength(3)] public string Name { get; set; } = null!;
         [Required] [MinLength(3)] public string Publishing { get; set; } = null!;

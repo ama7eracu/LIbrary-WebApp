@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LibraryWebApi1.Data.Interfaces;
 using LibraryWebApi1.Models;
 using Microsoft.EntityFrameworkCore;

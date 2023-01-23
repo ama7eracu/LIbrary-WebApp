@@ -8,6 +8,6 @@ namespace LibraryWebApi1.Services.Interfaces
 {
     public interface ISearchByGenre
     {
-        public Task<List<BookDto>> SearchByGenre(string searchGenre, IBookRepository context);
+        public Task<List<BookDTO>> SearchByGenre(string searchGenre, IBookRepository context);
     }
 }

@@ -16,9 +16,9 @@ namespace LibraryWebApi1.Controllers
     {
         private readonly IMagazineRepository _repository;
         private readonly IMapper _mapper;
-        private readonly ISearchByName<MagazineDto,IMagazineRepository> _search;
+        private readonly ISearchByName<MagazineDTO,IMagazineRepository> _search;
         public MagazinesController(IMagazineRepository repository,IMapper mapper,
-            ISearchByName<MagazineDto,IMagazineRepository> search)
+            ISearchByName<MagazineDTO,IMagazineRepository> search)
         {
             _repository = repository;
             _mapper = mapper;
@@ -26,7 +26,7 @@ namespace LibraryWebApi1.Controllers
         }
         // GET:api/Magazine/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MagazineDto>>> GetAllMagazines()
+        public async Task<ActionResult<IEnumerable<MagazineDTO>>> GetAllMagazines()
         {
             var magazines =await _repository.GetAllMagazine();
             if (!magazines.Any())
@@ -34,13 +34,13 @@ namespace LibraryWebApi1.Controllers
                 return NotFound();
             }
 
-            var magazinesDto = magazines.Select(magazine => _mapper.Map<MagazineDto>(magazine));
+            var magazinesDto = magazines.Select(magazine => _mapper.Map<MagazineDTO>(magazine));
             return Ok(magazinesDto);
         }
         
         //GET:api/Magazine/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<MagazineDto>> GetMagazine(long id)
+        public async Task<ActionResult<MagazineDTO>> GetMagazine(long id)
         {
             if (id < 0)
             {
@@ -53,12 +53,12 @@ namespace LibraryWebApi1.Controllers
             }
 
             var magazine = await _repository.GetMagazine(id);
-            return Ok(_mapper.Map<MagazineDto>(magazine));
+            return Ok(_mapper.Map<MagazineDTO>(magazine));
         }
         
         //POST:api/Magazine/
         [HttpPost]
-        public async Task<ActionResult> AddMagazine(MagazineDto magazineDto)
+        public async Task<ActionResult> AddMagazine(MagazineDTO magazineDto)
         {
             var magazine = _mapper.Map<Magazine>(magazineDto);
             if (!await _repository.AddMagazine(magazine))
@@ -70,7 +70,7 @@ namespace LibraryWebApi1.Controllers
         
         //PUT:api/Magazine/id
         [HttpPut("{id}")]
-        public async Task<ActionResult> EditMagazine(long id, MagazineDto magazineDto)
+        public async Task<ActionResult> EditMagazine(long id, MagazineDTO magazineDto)
         {
             if (id < 0)
             {
@@ -107,7 +107,7 @@ namespace LibraryWebApi1.Controllers
         
          //GET:api/Magazine/Search/name/searchName
         [HttpGet("search/name/{searchName}")]
-        public async Task<ActionResult<IQueryable<MagazineDto>>>SearchMagazineByName(string searchName)
+        public async Task<ActionResult<IQueryable<MagazineDTO>>>SearchMagazineByName(string searchName)
         {
             if (string.IsNullOrWhiteSpace(searchName))
             {

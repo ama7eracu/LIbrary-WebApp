@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LibraryWebApi1.Models.DTO
 {
-    public class BookDto
+    public class BookDTO
     {
         [Required] [MinLength(3)] public string Name { get; set; } = null!;
 

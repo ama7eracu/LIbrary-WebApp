@@ -16,11 +16,11 @@ namespace LibraryWebApi1.Controllers
     public class BooksController : Controller
     {
         private readonly IBookRepository _repository;
-        private readonly ISearchByName<BookDto,IBookRepository> _search;
+        private readonly ISearchByName<BookDTO,IBookRepository> _search;
         private readonly ISearchByGenre _searchByGenre;
         private readonly IMapper _mapper;
 
-        public BooksController(IBookRepository repository, IMapper mapper, ISearchByName<BookDto,IBookRepository> search,
+        public BooksController(IBookRepository repository, IMapper mapper, ISearchByName<BookDTO,IBookRepository> search,
             ISearchByGenre searchByGenre)
         {
             _repository = repository;
@@ -31,20 +31,20 @@ namespace LibraryWebApi1.Controllers
 
         // GET:api/Book/
         [HttpGet]
-        public async Task<ActionResult<IQueryable<BookDto>>> GetAllBooks()
+        public async Task<ActionResult<IQueryable<BookDTO>>> GetAllBooks()
         {
             var books = await _repository.GetAllBook();
             if (!books.Any())
             {
                 return NotFound();
             }
-            var bookDto = books.Select(book => _mapper.Map<BookDto>(book));
+            var bookDto = books.Select(book => _mapper.Map<BookDTO>(book));
             return Ok(bookDto);
         }
 
         //GET:api/Book/id
         [HttpGet("{id}")] 
-        public async Task<ActionResult<BookDto>> GetBook(long id)
+        public async Task<ActionResult<BookDTO>> GetBook(long id)
         {
             if (id < 0)
             {
@@ -55,13 +55,13 @@ namespace LibraryWebApi1.Controllers
                 return NotFound();
             }
             var book = await _repository.GetBook(id);
-            var bookDto = _mapper.Map<BookDto>(book);
+            var bookDto = _mapper.Map<BookDTO>(book);
             return Ok(bookDto);
         }
 
         //POST:api/Book
         [HttpPost]
-        public async Task<ActionResult> AddBook(BookDto bookDto)
+        public async Task<ActionResult> AddBook(BookDTO bookDto)
         { 
             var book = _mapper.Map<Book>(bookDto);
             if (!await _repository.AddBook(book))
@@ -73,7 +73,7 @@ namespace LibraryWebApi1.Controllers
 
          //PUT:api/Book/id
          [HttpPut("{id}")]
-         public async Task<ActionResult> EditBook(long id,BookDto bookDto)
+         public async Task<ActionResult> EditBook(long id,BookDTO bookDto)
         {
             if (id<0)
             {
@@ -110,7 +110,7 @@ namespace LibraryWebApi1.Controllers
 
          //GET:api/Book/Search/name/nameBook
         [HttpGet("search/name/{searchName}")]
-        public async Task< ActionResult<IEnumerable<BookDto>>> SearchBookByName(string searchName)
+        public async Task< ActionResult<IEnumerable<BookDTO>>> SearchBookByName(string searchName)
         {
             if (string.IsNullOrWhiteSpace(searchName))
             {
@@ -125,7 +125,7 @@ namespace LibraryWebApi1.Controllers
         }
          //GET:api/Book/search/genre/{roman}
         [HttpGet("search/genre/{searchGenre}")]
-        public async Task<ActionResult<List<BookDto>>> SearchByGenre(string searchGenre)
+        public async Task<ActionResult<List<BookDTO>>> SearchByGenre(string searchGenre)
         {
             if (string.IsNullOrEmpty(searchGenre))
             {

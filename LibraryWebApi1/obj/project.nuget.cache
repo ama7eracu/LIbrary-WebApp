@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3qInqnzlx4Pmhx8gFc4NkI+f784JgIx2BIxIzJ59Od+UBuhmhis/7zWBa5XUX2QrYVDDxjQEJpU5eWUPo4uU2w==",
+  "dgSpecHash": "ZNEjehs8QE0th8//EYUhu4u8kHV6RH8wtYyJO6sBeYFlYdtfDiALJFErUDwFiznitrolNLf/IuKnPwwXHdK/Yg==",
   "success": true,
-  "projectFilePath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi1/LibraryWebApi1/LibraryWebApi1.csproj",
+  "projectFilePath": "/Users/aleksandrmekanin/RiderProjects/LIbraryWebApi155/LibraryWebApi1/LibraryWebApi1.csproj",
   "expectedPackageFiles": [
     "/Users/aleksandrmekanin/.nuget/packages/automapper/12.0.0/automapper.12.0.0.nupkg.sha512",
     "/Users/aleksandrmekanin/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.0/automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

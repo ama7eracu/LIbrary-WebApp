@@ -8,7 +8,7 @@ namespace LibraryWebApi1.AutoMapperProfiles
     {
         public BookAutoMapperProfile()
         {
-            CreateMap<BookDto, Book>().ReverseMap();
+            CreateMap<BookDTO, Book>().ReverseMap();
         }
     }
 }

@@ -8,7 +8,7 @@ using LibraryWebApi1.Services.Interfaces;
 
 namespace LibraryWebApi1.Services
 {
-    public class MagazineSearch:ISearchByName<MagazineDto,IMagazineRepository>
+    public class MagazineSearch:ISearchByName<MagazineDTO,IMagazineRepository>
     {
         
         private readonly IMapper _mapper;
@@ -17,12 +17,16 @@ namespace LibraryWebApi1.Services
         {
             _mapper = mapper;
         }
-        public async Task<List<MagazineDto>> SearchByName(string searchName, IMagazineRepository repository)
+        public async Task<List<MagazineDTO>> SearchByName(string searchName, IMagazineRepository repository)
         {
             var magazines =await repository.GetAllMagazine();
             var foundMagazines = magazines
                 .Where(s => s.Name.ToLower().Contains(searchName.ToLower()));
-            return foundMagazines.Select(magazine => _mapper.Map<MagazineDto>(magazine)).ToList();
+            return foundMagazines.Select(magazine =>
+            {
+                if (magazine == null) throw new ArgumentNullException(nameof(magazine));
+                return _mapper.Map<MagazineDTO>(magazine);
+            }).ToList();
         }
         
         }

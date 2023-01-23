@@ -27,10 +27,10 @@ builder.Services.AddAutoMapper(typeof(BookAutoMapperProfile), typeof(MagazineAut
 //add Search Services
 
 builder.Services.AddScoped<BookSearch>();
-builder.Services.AddScoped<ISearchByName<BookDto,IBookRepository>>(serv => serv.GetRequiredService<BookSearch>());
+builder.Services.AddScoped<ISearchByName<BookDTO,IBookRepository>>(serv => serv.GetRequiredService<BookSearch>());
 builder.Services.AddScoped<ISearchByGenre>(serv => serv.GetRequiredService<BookSearch>());
 builder.Services.AddScoped<ISearchByName<LibraryDTO,ILibraryRepository>, LibrarySearch>();
-builder.Services.AddScoped<ISearchByName<MagazineDto,IMagazineRepository>, MagazineSearch>();
+builder.Services.AddScoped<ISearchByName<MagazineDTO,IMagazineRepository>, MagazineSearch>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
