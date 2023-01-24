@@ -1,13 +1,13 @@
 namespace LibraryWebApi1.Models
 {
-    public class Book:BaseClass
+    public class Book:BaseEntity
     {
         public string Author { get; set; } = null!;
         public string Genre { get; set; } = null!;
-        public override void Assigning(BaseClass baseClass)
+        public override void Assigning(BaseEntity baseEntity)
         {
-            base.Assigning(baseClass);
-            if (baseClass is Book book)
+            base.Assigning(baseEntity);
+            if (baseEntity is Book book)
             {
                 this.Author =book.Author;
                 this.Genre = book.Genre;

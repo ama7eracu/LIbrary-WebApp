@@ -8,7 +8,7 @@ namespace LibraryWebApi1.AutoMapperProfiles
     {
         public LibraryAutoMapperProfile()
         {
-            CreateMap<BaseClass, LibraryDTO>().ReverseMap();
+            CreateMap<BaseEntity, LibraryDTO>().ReverseMap();
             CreateMap<LibraryDTO, Book>().ReverseMap()
                 .AfterMap(((book, dto) => dto.Type = "Book"));
             CreateMap<LibraryDTO, Magazine>().ReverseMap()

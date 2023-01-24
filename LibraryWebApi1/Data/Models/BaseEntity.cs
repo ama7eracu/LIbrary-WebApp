@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace LibraryWebApi1.Models
 {
-    public class BaseClass
+    public class BaseEntity
     {
         [Key]
         public  long Id { get; set; }
@@ -9,12 +9,12 @@ namespace LibraryWebApi1.Models
         public int  Count { get; set; }
         public int PublicationYear { get; set; }
         public string Publishing { get; set; } = null!;
-        public virtual void Assigning(BaseClass baseClass)
+        public virtual void Assigning(BaseEntity baseEntity)
         {
-            this.Count = baseClass.Count;
-            this.Name = baseClass.Name;
-            this.Publishing = baseClass.Publishing;
-            this.PublicationYear = baseClass.PublicationYear;
+            this.Count = baseEntity.Count;
+            this.Name = baseEntity.Name;
+            this.Publishing = baseEntity.Publishing;
+            this.PublicationYear = baseEntity.PublicationYear;
         }
         
     }
