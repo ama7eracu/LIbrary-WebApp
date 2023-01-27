@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryWebApi1", "LibraryWebApi1\LibraryWebApi1.csproj", "{1072F052-7925-4DD7-A7B6-EAC59ABE28C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library-WebApp", "Library-WebApp\Library-WebApp.csproj", "{1072F052-7925-4DD7-A7B6-EAC59ABE28C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

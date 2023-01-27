@@ -947,11 +947,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/aleksandrmekanin/RiderProjects/todo-app1/LIbrary-WebApp/LibraryWebApi1/LibraryWebApi1.csproj",
-      "projectName": "LibraryWebApi1",
-      "projectPath": "/Users/aleksandrmekanin/RiderProjects/todo-app1/LIbrary-WebApp/LibraryWebApi1/LibraryWebApi1.csproj",
+      "projectUniqueName": "/Users/aleksandrmekanin/RiderProjects/todo-app1/LIbrary-WebApp12/Library-WebApp/Library-WebApp.csproj",
+      "projectName": "Library-WebApp",
+      "projectPath": "/Users/aleksandrmekanin/RiderProjects/todo-app1/LIbrary-WebApp12/Library-WebApp/Library-WebApp.csproj",
       "packagesPath": "/Users/aleksandrmekanin/.nuget/packages/",
-      "outputPath": "/Users/aleksandrmekanin/RiderProjects/todo-app1/LIbrary-WebApp/LibraryWebApi1/obj/",
+      "outputPath": "/Users/aleksandrmekanin/RiderProjects/todo-app1/LIbrary-WebApp12/Library-WebApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/aleksandrmekanin/.nuget/NuGet/NuGet.Config"

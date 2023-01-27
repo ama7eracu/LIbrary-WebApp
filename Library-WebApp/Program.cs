@@ -4,10 +4,7 @@ using LibraryWebApi1.Data.Interfaces;
 using LibraryWebApi1.Models.DTO;
 using LibraryWebApi1.Services;
 using LibraryWebApi1.Services.Interfaces;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 
 var builder = WebApplication.CreateBuilder(args);
